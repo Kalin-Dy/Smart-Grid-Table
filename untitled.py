@@ -6,7 +6,7 @@ import paho.mqtt.client as paho
 
 # Initialising broker and port for the mqtt connection
 broker = "broker.hivemq.com"
-# broker="192.168.001.222"
+#broker="192.168.0.105"
 # broker="192.168.43.6"
 port = 1883
 
@@ -98,28 +98,28 @@ def on_publish(client, userdata, result):  # create function for callback
 
 
 def retrieveMV_input():  ### Sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
-    inputValue = "p_set: " + ValueBox.get("1.0", "end-1c")
+    inputValue = "p_set: "+ ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
     Selection = MediumVoltageList.get(
         MediumVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "HAN":
-        TopicValue = "sendToPc/HAN"
+        TopicValue = "sendToPc/3920405579"
     elif Selection == "HAN2":
-        TopicValue = "sendToPc/HAN2"
+        TopicValue = "sendToPc/282947826"
     elif Selection == "HAN3":
-        TopicValue = "sendToPc/HAN3"
+        TopicValue = "sendToPc/4026521350"
     elif Selection == "Factory":
-        TopicValue = "sendToPc/Factory"
+        TopicValue = "sendToPc/2310161908"
     elif Selection == "Factory 2":
-        TopicValue = "sendToPc/Factory 2"
+        TopicValue = "sendToPc/4051964182"
     elif Selection == "Fueling station":
-        TopicValue = "sendToPc/Fueling station"
+        TopicValue = "sendToPc/2052891520"
     elif Selection == "Processing factory":
-        TopicValue = "sendToPc/Processing factory"
+        TopicValue = "sendToPc/605299859"
     elif Selection == "Chemical factory":
-        TopicValue = "sendToPc/Chemical factory"
+        TopicValue = "sendToPc/3649958435"
     elif Selection == "Charging station":
-        TopicValue = "sendToPc/Charging station"
+        TopicValue = "sendToPc/2310052191"
     if ValueBox.get("1.0", "end-1c") == "Darkmode":
         DarkMode()
     elif ValueBox.get("1.0", "end-1c") == "Lightmode":
@@ -134,47 +134,49 @@ def Generators_input():  ### This function sends the data from the Value box on 
     Selection = HighVoltageList.get(
         HighVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "Nuclear Generator -HV":
-        TopicValue = "sendToPc/Nuclear Generator"
+        TopicValue = "sendToPc/2309930275"
     elif Selection == "Powerplant -HV":
-        TopicValue = "sendToPc/Powerplant"
+        TopicValue = "sendToPc/527238502"
     elif Selection == "Coal Powerplant -HV":
-        TopicValue = "sendToPc/Coal Powerplant"
+        TopicValue = "sendToPc/295733986"
     elif Selection == "Nuclear Powerplant -HV":
-        TopicValue = "sendToPc/Nuclear Powerplant"
+        TopicValue = "sendToPc/3920381746"
     elif Selection == "Wind Generator -MV":
-        TopicValue = "sendToPc/Wind Generator"
+        TopicValue = "sendToPc/698489018"
     elif Selection == "HydroStation -MV":
-        TopicValue = "sendToPc/HydroStation"
+        TopicValue = "sendToPc/2052891520"
     elif Selection == "Solar farm -MV":
-        TopicValue = "sendToPc/Solar farm"
+        TopicValue = "sendToPc/2052767824"
     elif Selection == "Solar farm 2 -MV":
-        TopicValue = "sendToPc/Solar farm 2"
+        TopicValue = "sendToPc/695262796"
     elif Selection == "Wind Solar -MV":
-        TopicValue = "sendToPc/Wind Solar"
+        TopicValue = "sendToPc/1506226421"
     elif Selection == "Storage1":
-        TopicValue = "sendToPc/Storage1"
+        TopicValue = "sendToPc/2846345288"
     elif Selection == "Storage2":
-        TopicValue = "sendToPc/Storage2"
+        TopicValue = "sendToPc/2052791472"
     elif Selection == "Storage3":
-        TopicValue = "sendToPc/Storage3"
+        TopicValue = "sendToPc/2310197510"
     elif Selection == "Battery storage":
-        TopicValue = "sendToPc/Battery storage"
+        TopicValue = "sendToPc/3649465219"
     elif Selection == "Battery storage2":
-        TopicValue = "sendToPc/Battery storage2"
+        TopicValue = "sendToPc/360927797"
     elif Selection == "Neighbourhood Battery":
-        TopicValue = "sendToPc/Neighbourhood Battery"
+        TopicValue = "sendToPc/2309993847"
     elif Selection == "Solar farm without motor":
-        TopicValue = "sendToPc/Solar farm without motor"
+        TopicValue = "sendToPc/2309849586"
     elif Selection == "Solar farm small 1":
-        TopicValue = "sendToPc/Solar farm small 1"
+        TopicValue = "sendToPc/18990810"
     elif Selection == "Solar farm small 2":
-        TopicValue = "sendToPc/Solar farm small 2"
+        TopicValue = "sendToPc/3647830435"
     elif Selection == "Solar farm without solar panels":
-        TopicValue = "sendToPc/Solar farm without solar panels"
+        TopicValue = "sendToPc/3648096051"
     elif Selection == "Hydropower dam":
-        TopicValue = "sendToPc/Hydropower dam"
+        TopicValue = "sendToPc/3846378531"
     elif Selection == "Nuclear powerplant 2":
-        TopicValue = "sendToPc/Nuclear powerplant 2"
+        TopicValue = "sendToPc/168401146"
+    elif Selection == "Solar farm 3":
+        TopicValue = "sendToPc/515442678"
     if ValueBox.get("1.0", "end-1c") == "Darkmode":
         DarkMode()
     elif ValueBox.get("1.0", "end-1c") == "Lightmode":
@@ -188,52 +190,55 @@ def retrieveLV_input():  ### Sends the data from the Value box on a chosen topic
     TopicValue = "None"
     Selection = LowVoltageList.get(LowVoltageList.curselection())
     if Selection == "Load":
-        frame.text.set("The power can vary from 50 to 100")
-        TopicValue = "sendToPc/Load"
+        TopicValue = "sendToPc/2052517040"
+    elif Selection == "Farm":
+        TopicValue == "sendToPc/4066949349"
     elif Selection == "House":
-        TopicValue = "sendToPc/House"
+        TopicValue = "sendToPc/2052817936"
     elif Selection == "Appartment":
-        TopicValue = "sendToPc/Appartment"
+        TopicValue = "sendToPc/3920341176"
     elif Selection == "Appartment2":
-        TopicValue = "sendToPc/Appartment2"
+        TopicValue = "sendToPc/4025224262"
     elif Selection == "Appartment3":
-        TopicValue = "sendToPc/Appartment3"
+        TopicValue = "sendToPc/2053040528"
     elif Selection == "Appartment4":
-        TopicValue = "sendToPc/Appartment4"
+        TopicValue = "sendToPc/3688487909"
     elif Selection == "Appartment5":
-        TopicValue = "sendToPc/Appartment5"
+        TopicValue = "sendToPc/72823031"
     elif Selection == "Appartment6":
-        TopicValue = "sendToPc/Appartment6"
+        TopicValue = "sendToPc/3846246323"
     elif Selection == "Packhouse":
-        TopicValue = "sendToPc/Packhouse"
+        TopicValue = "sendToPc/2310135841"
     elif Selection == "Charging station":
-        TopicValue = "sendToPc/Charging station"
+        TopicValue = "sendToPc/610176659"
     elif Selection == "Car charging station":
-        TopicValue = "sendToPc/Car charging station"
+        TopicValue = "sendToPc/586463298"
     elif Selection == "Car charging station 2":
-        TopicValue = "sendToPc/Car charging station 2"
+        TopicValue = "sendToPc/2310052343"
     elif Selection == "Packhouse2":
-        TopicValue = "sendToPc/Packhouse2"
+        TopicValue = "sendToPc/3920294633"
     elif Selection == "Hospital":
-        TopicValue = "sendToPc/Hospital"
+        TopicValue = "sendToPc/4024653174"
     elif Selection == "Hospital2":
-        TopicValue = "sendToPc/Hospital2"
+        TopicValue = "sendToPc/3649459203"
     elif Selection == "Hospital3":
-        TopicValue = "sendToPc/Hospital3"
-    elif Selection == "sendToPc/Hospital4":
-        TopicValue = "sendToPc/Hospital4"
+        TopicValue = "sendToPc/536179654"
+    elif Selection == "Hospital4":
+        TopicValue = "sendToPc/4026693430"
     elif Selection == "Terrace house 1":
-        TopicValue = "sendToPc/Terrace house 1"
+        TopicValue = "sendToPc/695368886"
     elif Selection == "Terrace house 3":
-        TopicValue = "sendToPc/Terrace house 3"
+        TopicValue = "sendToPc/3649886163"
+    elif Selection == "Terrace house 2":
+        TopicValue = "sendToPc/2052180480"
     elif Selection == "Detached house":
-        TopicValue = "sendToPc/Detached house"
+        TopicValue = "sendToPc/3649488643"
     elif Selection == "Detached house 2":
-        TopicValue = "sendToPc/Detached house 2"
+        TopicValue = "sendToPc/786497569"
     elif Selection == "Detached house 3":
-        TopicValue = "sendToPc/Detached house 3"
+        TopicValue = "sendToPc/525736038"
     elif Selection == "Shopping Mall":
-        TopicValue = "sendToPc/Shopping Mall"
+        TopicValue = "sendToPc/2310254414"
     client1.publish(TopicValue, inputValue)
     ValueBox.delete("1.0", "end-1c")
 
@@ -243,7 +248,7 @@ def ShowlVValues(event):
     if Selection == "Load":
         maxValue = 100
         minValue = 15
-        String = 'Load Selected, set power', minValue,'-', maxValue
+        String = ("Load Selected, set power", minValue, "-" , maxValue)
         frame.text.set(String)
     elif Selection == "House":
         minValue = 25
@@ -524,9 +529,9 @@ window.title("Smart Table Demo GUI")  ### Window title
 window.geometry('400x800')  ### window geometry in pixels
 LowVoltageBlocks = ["Load", "Appartment", "Appartment2", "Appartment3", "Appartment4", "Packhouse", "Packhouse2",
                     "Hospital", "Hospital2", "Hospital3",
-                    "Hospital4", "Terrace house 1", "Terrace house 3", "Detached house", "Detached house 2",
+                    "Hospital4", "Terrace house 1","Terrace house 2", "Terrace house 3", "Detached house", "Detached house 2",
                     "Detached house 3", "Shopping Mall",
-                    "Farm", "Appartment5", "Appartment6", "Car charging station", "Car charging station 2",
+                    "Farm", "Appartment5", "Appartment6","Farm", "Car charging station", "Car charging station 2",
                     "Charging station", "House"]
 
 MediumVoltageBlocks = ["HAN", "HAN2", "Fueling station", "Processing factory", "Chemical factory", "Charging station"
@@ -534,7 +539,7 @@ MediumVoltageBlocks = ["HAN", "HAN2", "Fueling station", "Processing factory", "
 
 HighVoltageBlocks = ["Nuclear Generator -HV", "Powerplant -HV", "Coal Powerplant -HV", "Nuclear Powerplant -HV",
                      "Wind Generator -MV", "HydroStation -MV",
-                     "Solar farm -MV", "Wind Solar -MV", "Solar farm 2 -MV", "Storage1", "Storage2", "Storage3",
+                     "Solar farm -MV", "Wind Solar -MV", "Solar farm 2 -MV","Solar farm 3", "Storage1", "Storage2", "Storage3",
                      "Battery storage", "Battery storage2", "Neighbourhood Battery",
                      "Solar farm without motor", "Solar farm small 1", "Solar farm small 2",
                      "Solar farm without solar panels", "Hydropower dam", "Nuclear powerplant 2"]
