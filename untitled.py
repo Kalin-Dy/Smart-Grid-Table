@@ -1,14 +1,109 @@
 # 11.03.2020 Smart Grid GUI v0.7 By Kalin Dyankov
 # Importing Tkinter and paho for mqqtt support and tkinter GUI widgets
-from tkinter import *
-import tkinter as tk
+
 import paho.mqtt.client as paho
+import tkinter as tk
+from tkinter import *
+from tkinter import messagebox
 
 # Initialising broker and port for the mqtt connection
 broker = "broker.hivemq.com"
 #broker="192.168.0.105"
 # broker="192.168.43.6"
 port = 1883
+class Building:
+    minValue = 0
+    maxValue = 10
+class Load(Building):
+    minValue=  15
+    maxValue = 100
+class Appartment(Building):
+    minValue = 5
+    maxValue = 60
+class Packhouse(Building):
+    minValue = 30
+    maxValue = 400
+class Hospital(Building):
+    minValue = 80
+    maxValue = 1000
+class TerraceHouse(Building):
+    minValue = 15
+    maxValue = 100
+class DetachedHouse(Building):
+    minValue = 80
+    maxValue = 1000
+class ShoppingMall(Building):
+    minValue = 80
+    maxValue = 1000
+class Farm(Building):   ##String don work
+    minValue = 10
+    maxValue = 500
+class CarChargingStation(Building):
+    minValue = 200
+    maxValue = 3000
+class ChargingStation(Building):
+    minValue = 100
+    maxValue = 1000
+class House(Building):
+    minValue = 25
+    maxValue = 200
+class HAN(Building):
+    minValue = 150
+    maxValue = 1000
+class FuelingStation(Building):
+    minValue = 150
+    maxValue = 1000
+class ProcessingFactory(Building):
+    minValue = 150
+    maxValue = 1000
+class ChemicalFactory(Building):
+    minValue = 150
+    maxValue = 1000
+class Factory(Building):
+    minValue = 150
+    maxValue = 1000
+class NuclearGenerator(Building):
+    minValue = 150
+    maxValue = 1000
+class Powerplant(Building):
+    minValue = 150
+    maxValue = 1000
+class CoalPowerplant(Building):
+    minValue = 150
+    maxValue = 1000
+class WindGenerator(Building):
+    minValue = 150
+    maxValue = 1000
+class NuclearPowerplant(Building):
+    minValue = 150
+    maxValue = 1000
+class Hydrostation(Building):
+    minValue = 150
+    maxValue = 1000
+class SolarFarm(Building):
+    minValue = 150
+    maxValue = 1000
+class WindSolar(Building):
+    minValue = 150
+    maxValue = 1000
+class Storage(Building):
+    minValue = 150
+    maxValue = 1000
+class Battery(Building):
+    minValue = 150
+    maxValue = 1000
+class SmallSolarFarm(Building):
+    minValue = 150
+    maxValue = 1000
+class HydropowerDam(Building):
+    minValue = 150
+    maxValue = 1000
+
+def CheckRange(low,high,power,TopicValue,inputValue):
+    if(power<low or power>high):
+        Errormsg.showerror(title="Power Error", message="Power not within acceptable range")
+    else:
+        client1.publish(TopicValue, inputValue)
 
 
 def LightMode(
@@ -100,420 +195,370 @@ def on_publish(client, userdata, result):  # create function for callback
 def retrieveMV_input():  ### Sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
     inputValue = "p_set: "+ ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
+    Power = int(ValueBox.get("1.0", "end-1c"))
     Selection = MediumVoltageList.get(
         MediumVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "HAN":
         TopicValue = "sendToPc/3920405579"
+        CheckRange(HAN.minValue, HAN.maxValue, Power, TopicValue, inputValue)
     elif Selection == "HAN2":
         TopicValue = "sendToPc/282947826"
+        CheckRange(HAN.minValue, HAN.maxValue, Power, TopicValue, inputValue)
     elif Selection == "HAN3":
         TopicValue = "sendToPc/4026521350"
+        CheckRange(HAN.minValue, HAN.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Factory":
         TopicValue = "sendToPc/2310161908"
+        CheckRange(Factory.minValue, Factory.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Factory 2":
         TopicValue = "sendToPc/4051964182"
+        CheckRange(Factory.minValue, Factory.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Fueling station":
         TopicValue = "sendToPc/2052891520"
+        CheckRange(FuelingStation.minValue, FuelingStation.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Processing factory":
         TopicValue = "sendToPc/605299859"
+        CheckRange(ProcessingFactory.minValue, ProcessingFactory.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Chemical factory":
         TopicValue = "sendToPc/3649958435"
+        CheckRange(ChemicalFactory.minValue, ChemicalFactory.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Charging station":
         TopicValue = "sendToPc/2310052191"
-    if ValueBox.get("1.0", "end-1c") == "Darkmode":
-        DarkMode()
-    elif ValueBox.get("1.0", "end-1c") == "Lightmode":
-        LightMode()
-    client1.publish(TopicValue, inputValue)  ### Publishes data to mqtt broker
+        CheckRange(ChargingStation.minValue, ChargingStation.maxValue, Power, TopicValue, inputValue)
+
     ValueBox.delete("1.0", "end-1c")
 
 
 def Generators_input():  ### This function sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
     inputValue = "p_nom: " + ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
+    Power = int(ValueBox.get("1.0", "end-1c"))
     Selection = HighVoltageList.get(
         HighVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "Nuclear Generator -HV":
         TopicValue = "sendToPc/2309930275"
+        CheckRange(NuclearGenerator.minValue,NuclearGenerator.maxValue,Power,TopicValue,inputValue)
     elif Selection == "Powerplant -HV":
         TopicValue = "sendToPc/527238502"
+        CheckRange(Powerplant.minValue, Powerplant.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Coal Powerplant -HV":
         TopicValue = "sendToPc/295733986"
+        CheckRange(CoalPowerplant.minValue, CoalPowerplant.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Nuclear Powerplant -HV":
         TopicValue = "sendToPc/3920381746"
+        CheckRange(NuclearPowerplant.minValue, NuclearPowerplant.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Wind Generator -MV":
         TopicValue = "sendToPc/698489018"
+        CheckRange(WindGenerator.minValue, WindGenerator.maxValue, Power, TopicValue, inputValue)
     elif Selection == "HydroStation -MV":
         TopicValue = "sendToPc/2052891520"
+        CheckRange(Hydrostation.minValue, Hydrostation.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm -MV":
         TopicValue = "sendToPc/2052767824"
+        CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm 2 -MV":
         TopicValue = "sendToPc/695262796"
+        CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Wind Solar -MV":
         TopicValue = "sendToPc/1506226421"
+        CheckRange(WindSolar.minValue, WindSolar.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Storage1":
         TopicValue = "sendToPc/2846345288"
+        CheckRange(Storage.minValue, Storage.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Storage2":
         TopicValue = "sendToPc/2052791472"
+        CheckRange(Storage.minValue, Storage.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Storage3":
         TopicValue = "sendToPc/2310197510"
+        CheckRange(Storage.minValue, Storage.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Battery storage":
         TopicValue = "sendToPc/3649465219"
+        CheckRange(Battery.minValue, Battery.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Battery storage2":
         TopicValue = "sendToPc/360927797"
+        CheckRange(Battery.minValue, Battery.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Neighbourhood Battery":
         TopicValue = "sendToPc/2309993847"
+        CheckRange(Battery.minValue, Battery.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm without motor":
         TopicValue = "sendToPc/2309849586"
+        CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm small 1":
         TopicValue = "sendToPc/18990810"
+        CheckRange(SmallSolarFarm.minValue, SmallSolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm small 2":
         TopicValue = "sendToPc/3647830435"
+        CheckRange(SmallSolarFarm.minValue, SmallSolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm without solar panels":
         TopicValue = "sendToPc/3648096051"
+        CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Hydropower dam":
         TopicValue = "sendToPc/3846378531"
+        CheckRange(HydropowerDam.minValue, HydropowerDam.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Nuclear powerplant 2":
         TopicValue = "sendToPc/168401146"
+        CheckRange(NuclearPowerplant.minValue, NuclearPowerplant.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Solar farm 3":
         TopicValue = "sendToPc/515442678"
-    if ValueBox.get("1.0", "end-1c") == "Darkmode":
-        DarkMode()
-    elif ValueBox.get("1.0", "end-1c") == "Lightmode":
-        LightMode()
-    client1.publish(TopicValue, inputValue)  ###Publishes dat to mqtt Broker
+        CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
+    ##client1.publish(TopicValue, inputValue)  ###Publishes dat to mqtt Broker
     ValueBox.delete("1.0", "end-1c")
 
 
 def retrieveLV_input():  ### Sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
     inputValue = "p_set: " + ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
+
     Selection = LowVoltageList.get(LowVoltageList.curselection())
     if Selection == "Load":
         TopicValue = "sendToPc/2052517040"
+        CheckRange(Load.minValue,Load.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Farm":
         TopicValue == "sendToPc/4066949349"
+        CheckRange(Farm.minValue, Farm.maxValue, Power, TopicValue, inputValue)
     elif Selection == "House":
         TopicValue = "sendToPc/2052817936"
+        CheckRange(House.minValue, House.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment":
         TopicValue = "sendToPc/3920341176"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment2":
         TopicValue = "sendToPc/4025224262"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment3":
         TopicValue = "sendToPc/2053040528"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment4":
         TopicValue = "sendToPc/3688487909"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment5":
         TopicValue = "sendToPc/72823031"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Appartment6":
         TopicValue = "sendToPc/3846246323"
+        CheckRange(Appartment.minValue, Appartment.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Packhouse":
         TopicValue = "sendToPc/2310135841"
+        CheckRange(Packhouse.minValue, Packhouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Charging station":
         TopicValue = "sendToPc/610176659"
+        CheckRange(ChargingStation.minValue, ChargingStation.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Car charging station":
         TopicValue = "sendToPc/586463298"
+        CheckRange(CarChargingStation.minValue,CarChargingStation.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Car charging station 2":
         TopicValue = "sendToPc/2310052343"
+        CheckRange(CarChargingStation.minValue,CarChargingStation.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Packhouse2":
         TopicValue = "sendToPc/3920294633"
+        CheckRange(Packhouse.minValue, Packhouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Hospital":
         TopicValue = "sendToPc/4024653174"
+        CheckRange(Hospital.minValue,Hospital.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Hospital2":
         TopicValue = "sendToPc/3649459203"
+        CheckRange(Hospital.minValue, Hospital.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Hospital3":
         TopicValue = "sendToPc/536179654"
+        CheckRange(Hospital.minValue, Hospital.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Hospital4":
         TopicValue = "sendToPc/4026693430"
+        CheckRange(Hospital.minValue, Hospital.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Terrace house 1":
         TopicValue = "sendToPc/695368886"
+        CheckRange(TerraceHouse.minValue, TerraceHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Terrace house 3":
         TopicValue = "sendToPc/3649886163"
+        CheckRange(TerraceHouse.minValue, TerraceHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Terrace house 2":
         TopicValue = "sendToPc/2052180480"
+        CheckRange(TerraceHouse.minValue, TerraceHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Detached house":
         TopicValue = "sendToPc/3649488643"
+        CheckRange(DetachedHouse.minValue, DetachedHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Detached house 2":
         TopicValue = "sendToPc/786497569"
+        CheckRange(DetachedHouse.minValue, DetachedHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Detached house 3":
         TopicValue = "sendToPc/525736038"
+        CheckRange(DetachedHouse.minValue, DetachedHouse.maxValue, Power, TopicValue, inputValue)
     elif Selection == "Shopping Mall":
         TopicValue = "sendToPc/2310254414"
-    client1.publish(TopicValue, inputValue)
+        CheckRange(ShoppingMall.minValue, ShoppingMall.maxValue, Power, TopicValue, inputValue)
     ValueBox.delete("1.0", "end-1c")
 
 
 def ShowlVValues(event):
     Selection = LowVoltageList.get(LowVoltageList.curselection())
     if Selection == "Load":
-        maxValue = 100
-        minValue = 15
-        String = ("Load Selected, set power", minValue, "-" , maxValue)
+        String = f"{Selection} Selected, set power: from {Load.minValue} to {Load.maxValue}"
         frame.text.set(String)
     elif Selection == "House":
-        minValue = 25
-        maxValue = 200
-        String = 'House Selected, set power', minValue,'-', maxValue
+        String = f"{Selection} Selected, set power: from {House.minValue} to {House.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment2":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment3":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment 3 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment4":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment 4 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment5":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment 5 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Appartment6":
-        minValue = 5
-        maxValue = 60
-        String = 'Appartment 6 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Appartment.minValue} to {Appartment.maxValue}"
         frame.text.set(String)
     elif Selection == "Packhouse":
-        minValue = 30
-        maxValue = 400
-        String = 'Packhouse Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Packhouse.minValue} to {Packhouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Charging station":
-        minValue = 100
-        maxValue = 1000
-        String = 'Charging station Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {ChargingStation.minValue} to {ChargingStation.maxValue}"
         frame.text.set(String)
     elif Selection == "Car charging station":
-        minValue = 200
-        maxValue = 3000
-        String = 'Car charging station Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {CarChargingStation.minValue} to {CarChargingStation.maxValue}"
         frame.text.set(String)
     elif Selection == "Car charging station 2":
-        minValue = 200
-        maxValue = 3000
-        String = 'Car charging station 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {CarChargingStation.minValue} to {CarChargingStation.maxValue}"
         frame.text.set(String)
     elif Selection == "Packhouse2":
-        minValue = 30
-        maxValue = 400
-        String = 'Packhouse Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Packhouse.minValue} to {Packhouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Hospital":
-        minValue = 80
-        maxValue = 1000
-        String = 'Hospital Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Hospital.minValue} to {Hospital.maxValue}"
         frame.text.set(String)
     elif Selection == "Hospital2":
-        minValue = 80
-        maxValue = 1000
-        String = 'Hospital 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Hospital.minValue} to {Hospital.maxValue}"
         frame.text.set(String)
     elif Selection == "Hospital3":
-        minValue = 80
-        maxValue = 1000
-        String = 'Hospital 3 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Hospital.minValue} to {Hospital.maxValue}"
         frame.text.set(String)
-    elif Selection == "sendToPc/Hospital4":
-        minValue = 80
-        maxValue = 1000
-        String = 'Hospital 4 Selected, set power', minValue, '-', maxValue
+    elif Selection == "Hospital4":
+        String = f"{Selection} Selected, set power: from {Hospital.minValue} to {Hospital.maxValue}"
         frame.text.set(String)
     elif Selection == "Terrace house 1":
-        minValue = 15
-        maxValue = 100
-        String = 'Terrace house 1 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {TerraceHouse.minValue} to {TerraceHouse.maxValue}"
+        frame.text.set(String)
+    elif Selection == "Terrace house 2":
+        String = f"{Selection} Selected, set power: from {TerraceHouse.minValue} to {TerraceHouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Terrace house 3":
-        minValue = 15
-        maxValue = 100
-        String = 'Terrace house 3 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {TerraceHouse.minValue} to {TerraceHouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Detached house":
-        minValue = 80
-        maxValue = 1000
-        String = 'Detached house Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {DetachedHouse.minValue} to {DetachedHouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Detached house 2":
-        minValue = 80
-        maxValue = 1000
-        String = 'Detached house 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {DetachedHouse.minValue} to {DetachedHouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Detached house 3":
-        minValue = 80
-        maxValue = 1000
-        String = 'Detached house 3 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {DetachedHouse.minValue} to {DetachedHouse.maxValue}"
         frame.text.set(String)
     elif Selection == "Shopping Mall":
-        minValue = 80
-        maxValue = 1000
-        String = 'Shopping Mall Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {ShoppingMall.minValue} to {ShoppingMall.maxValue}"
+        frame.text.set(String)
+    elif Selection == "Farm":
+        String = f"{Selection} Selected, set power: from {Farm.minValue} to {Farm.maxValue}"
         frame.text.set(String)
 def ShowMVValues(event):
     Selection = MediumVoltageList.get(MediumVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "HAN":
-        minValue = 150
-        maxValue = 1000
-        String = 'HAN Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {HAN.minValue} to {HAN.maxValue}"
         frame.text.set(String)
     elif Selection == "HAN2":
-        minValue = 150
-        maxValue = 1000
-        String = 'HAN 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {HAN.minValue} to {HAN.maxValue}"
         frame.text.set(String)
     elif Selection == "HAN3":
-        minValue = 150
-        maxValue = 1000
-        String = 'HAN 3 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {HAN.minValue} to {HAN.maxValue}"
         frame.text.set(String)
     elif Selection == "Factory":
-        minValue = 150
-        maxValue = 1000
-        String = 'Factory Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Factory.minValue} to {Factory.maxValue}"
         frame.text.set(String)
     elif Selection == "Factory 2":
-        minValue = 150
-        maxValue = 1000
-        String = 'Factory 2 Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Factory.minValue} to {Factory.maxValue}"
         frame.text.set(String)
     elif Selection == "Fueling station":
-        minValue = 150
-        maxValue = 1000
-        String = 'Fueling station Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {FuelingStation.minValue} to {FuelingStation.maxValue}"
         frame.text.set(String)
     elif Selection == "Processing factory":
-        minValue = 150
-        maxValue = 1000
-        String = 'Processing factory, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {ProcessingFactory.minValue} to {ProcessingFactory.maxValue}"
         frame.text.set(String)
     elif Selection == "Chemical factory":
-        minValue = 150
-        maxValue = 1000
-        String = 'Chemical factory Selected, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {ChemicalFactory.minValue} to {ChemicalFactory.maxValue}"
         frame.text.set(String)
     elif Selection == "Charging station":
-        minValue = 150
-        maxValue = 1000
-        String = 'Charging Station, set power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {ChargingStation.minValue} to {ChargingStation.maxValue}"
         frame.text.set(String)
 def ShowGENValues(event):
     Selection = HighVoltageList.get(
         HighVoltageList.curselection())  ### takes the data from selected item on the listbox
     if Selection == "Nuclear Generator -HV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Nuclear Generator Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {NuclearGenerator.minValue} to {NuclearGenerator.maxValue}"
         frame.text.set(String)
     elif Selection == "Powerplant -HV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Powerplant  Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Powerplant.minValue} to {Powerplant.maxValue}"
         frame.text.set(String)
     elif Selection == "Coal Powerplant -HV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Coal Powerplant Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {CoalPowerplant.minValue} to {CoalPowerplant.maxValue}"
         frame.text.set(String)
     elif Selection == "Nuclear Powerplant -HV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Nuclear Powerplant Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {NuclearPowerplant.minValue} to {NuclearPowerplant.maxValue}"
         frame.text.set(String)
     elif Selection == "Wind Generator -MV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Wind Generator Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {WindGenerator.minValue} to {WindGenerator.maxValue}"
         frame.text.set(String)
     elif Selection == "HydroStation -MV":
-        minValue = 150
-        maxValue = 1000
-        String = 'HydroStation Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Hydrostation.minValue} to {Hydrostation.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm -MV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Solar farm Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm 2 -MV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Solar farm 2 Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Wind Solar -MV":
-        minValue = 150
-        maxValue = 1000
-        String = 'Wind Solar Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {WindSolar.minValue} to {WindSolar.maxValue}"
         frame.text.set(String)
     elif Selection == "Storage1":
-        minValue = 150
-        maxValue = 1000
-        String = 'Storage 1 Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Storage.minValue} to {Storage.maxValue}"
         frame.text.set(String)
     elif Selection == "Storage2":
-        minValue = 150
-        maxValue = 1000
-        String = 'Storage 2 Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Storage.minValue} to {Storage.maxValue}"
         frame.text.set(String)
     elif Selection == "Storage3":
-        minValue = 150
-        maxValue = 1000
-        String = 'Storage 3 Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Storage.minValue} to {Storage.maxValue}"
         frame.text.set(String)
     elif Selection == "Battery storage":
-        minValue = 150
-        maxValue = 1000
-        String = 'Battery Storage Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Battery.minValue} to {Battery.maxValue}"
         frame.text.set(String)
     elif Selection == "Battery storage2":
-        minValue = 150
-        maxValue = 1000
-        String = 'Battery Storage 2 Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Battery.minValue} to {Battery.maxValue}"
         frame.text.set(String)
     elif Selection == "Neighbourhood Battery":
-        minValue = 150
-        maxValue = 1000
-        String = 'Neighbourhood Battery Selected, set stored power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {Battery.minValue} to {Battery.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm without motor":
-        minValue = 150
-        maxValue = 1000
-        String = 'Solar farm without motor Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm small 1":
-        minValue = 150
-        maxValue = 1000
-        String = ' Small Solar farm Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SmallSolarFarm.minValue} to {SmallSolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm small 2":
-        minValue = 150
-        maxValue = 1000
-        String = 'Small Solar farm 2 Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SmallSolarFarm.minValue} to {SmallSolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Solar farm without solar panels":
-        minValue = 150
-        maxValue = 1000
-        String = 'Solar farm without solar panels Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
         frame.text.set(String)
     elif Selection == "Hydropower dam":
-        minValue = 150
-        maxValue = 1000
-        String = 'Hydropower dam Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {HydropowerDam.minValue} to {HydropowerDam.maxValue}"
         frame.text.set(String)
     elif Selection == "Nuclear powerplant 2":
-        minValue = 150
-        maxValue = 1000
-        String = 'Nuclear Powerplant 2 Powerplant Selected, set generated power', minValue, '-', maxValue
+        String = f"{Selection} Selected, set power: from {NuclearPowerplant.minValue} to {NuclearPowerplant.maxValue}"
         frame.text.set(String)
 
 client1 = paho.Client("Controller")  # create client object
@@ -531,7 +576,7 @@ LowVoltageBlocks = ["Load", "Appartment", "Appartment2", "Appartment3", "Appartm
                     "Hospital", "Hospital2", "Hospital3",
                     "Hospital4", "Terrace house 1","Terrace house 2", "Terrace house 3", "Detached house", "Detached house 2",
                     "Detached house 3", "Shopping Mall",
-                    "Farm", "Appartment5", "Appartment6","Farm", "Car charging station", "Car charging station 2",
+                    "Farm", "Appartment5", "Appartment6", "Car charging station", "Car charging station 2",
                     "Charging station", "House"]
 
 MediumVoltageBlocks = ["HAN", "HAN2", "Fueling station", "Processing factory", "Chemical factory", "Charging station"
@@ -556,12 +601,12 @@ for item in HighVoltageBlocks:
     HighVoltageList.insert(END, item)
 
 ### Creation of the widgets and their attributes
+Errormsg= tk.messagebox
 LVLabel = tk.Label(window, text="Low Voltage Buildings")
 MVLabel = tk.Label(window, text="Medium Voltage Buildings")
 HVLabel = tk.Label(window, text="Generators")
 PCLabel = tk.Label(window, textvariable=frame.text)
 PayloadLabel = tk.Label(window, text="Power")
-
 PCLabel.pack(side=tk.TOP, anchor="n")
 frame.text.set("whoop whoop")
 LowVoltageList.bind('<<ListboxSelect>>', ShowlVValues)
