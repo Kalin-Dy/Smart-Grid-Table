@@ -302,7 +302,7 @@ def Generators_input():  ### This function sends the data from the Value box on 
         TopicValue = "sendToPc/515442678"
         CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     ##client1.publish(TopicValue, inputValue)  ###Publishes dat to mqtt Broker
-    ValueBox.delete("1.0", "end-1c")
+    ##ValueBox.delete("1.0", "end-1c")
 def retrieveLV_input():  ### Sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
     inputValue = "p_set: " + ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
@@ -519,6 +519,9 @@ def ShowGENValues(event):
     elif Selection == "Solar farm 2 -MV":
         String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
         frame.text.set(String)
+    elif Selection == "Solar farm 3":
+        String = f"{Selection} Selected, set power: from {SolarFarm.minValue} to {SolarFarm.maxValue}"
+        frame.text.set(String)
     elif Selection == "Wind Solar -MV":
         String = f"{Selection} Selected, set power: from {WindSolar.minValue} to {WindSolar.maxValue}"
         frame.text.set(String)
@@ -559,7 +562,7 @@ def ShowGENValues(event):
         String = f"{Selection} Selected, set power: from {NuclearPowerplant.minValue} to {NuclearPowerplant.maxValue}"
         frame.text.set(String)
 
-client1 = paho.Client("Controller")  # create client object
+client1 = paho.Client()  # create client object
 client1.on_publish = on_publish  # assign function to callback
 client1.connect(broker, port)  # establish connection
 
