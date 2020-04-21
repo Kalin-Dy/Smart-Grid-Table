@@ -303,12 +303,10 @@ def Generators_input():  ### This function sends the data from the Value box on 
         CheckRange(SolarFarm.minValue, SolarFarm.maxValue, Power, TopicValue, inputValue)
     ##client1.publish(TopicValue, inputValue)  ###Publishes dat to mqtt Broker
     ValueBox.delete("1.0", "end-1c")
-
-
 def retrieveLV_input():  ### Sends the data from the Value box on a chosen topic by the list appending p_set for the Json file
     inputValue = "p_set: " + ValueBox.get("1.0", "end-1c")
     TopicValue = "None"
-
+    Power = int(ValueBox.get("1.0", "end-1c"))
     Selection = LowVoltageList.get(LowVoltageList.curselection())
     if Selection == "Load":
         TopicValue = "sendToPc/2052517040"
