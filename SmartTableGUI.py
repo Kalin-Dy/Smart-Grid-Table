@@ -7,23 +7,21 @@ import json
 import os
 import sys
 
-
-class Resolution():
-    x = 1280
-    y = 720
-    Scenariox= x/4
-    Scenarioy = y/2
-    PowerLabel= 50
+class Resolution:
+    x=0
+    y=0
+    Scenariox = x / 4
+    Scenarioy = y / 2
 class MQTT():
-    port= 1883
+    port=0
     broker="broker.hivemq.com"
     Topic ="none"
     Payload =" "
-    ScenarioPayload=""
-    GeneratorPayload=""
 class SmartTableWindow(QMainWindow):
+
     def __init__(self):
         super(SmartTableWindow, self).__init__()
+        self.Configfile()
         self.setGeometry(Resolution.x,Resolution.y,Resolution.x,Resolution.y)
         self.setWindowTitle("SmartTableGUI")
         self.initUI()
@@ -32,6 +30,12 @@ class SmartTableWindow(QMainWindow):
         self.client1 = paho.Client()  # create client object
         self.client1.on_publish = on_publish  # assign function to callback
         self.client1.connect(MQTT.broker, MQTT.port)
+        self.ConfigButton=QtWidgets.QPushButton(self)
+        self.SendConfig=QtWidgets.QPushButton(self)
+        self.ConfigBroker=QtWidgets.QLineEdit(self)
+        self.ConfigPort = QtWidgets.QLineEdit(self)
+        self.ConfigResolutionX = QtWidgets.QLineEdit(self)
+        self.ConfigResolutionY = QtWidgets.QLineEdit(self)
         self.AdminLabel=QtWidgets.QLabel(self)
         self.AddbuildingNameLabel=QtWidgets.QLabel(self)
         self.AddbuildingVoltageLabel = QtWidgets.QLabel(self)
@@ -90,6 +94,12 @@ class SmartTableWindow(QMainWindow):
         self.HideInitObjects()
         self.Page0()
     def HideInitObjects(self):
+        self.ConfigButton.hide()
+        self.SendConfig.hide()
+        self.ConfigPort.hide()
+        self.ConfigBroker.hide()
+        self.ConfigResolutionX.hide()
+        self.ConfigResolutionY.hide()
         self.AdminLabel.hide()
         self.AddbuildingNameLabel.hide()
         self.AddbuildingVoltageLabel.hide()
@@ -142,6 +152,7 @@ class SmartTableWindow(QMainWindow):
         self.ScenarioSunny.hide()
         self.IndividualAdjustmentsButton.hide()
     def HideAdminPage(self):
+        self.ConfigButton.hide()
         self.AddBuildingButton.hide()
         self.Password.hide()
         self.PasswordButton.hide()
@@ -224,50 +235,50 @@ class SmartTableWindow(QMainWindow):
         self.ScenarioSunny.show()
         self.ScenarioSunny.setIcon(QtGui.QIcon("Sunny.jpg"))
         self.ScenarioSunny.setIconSize(QtCore.QSize(Resolution.Scenariox,Resolution.Scenarioy))
-        self.ScenarioSunny.clicked.connect(self.TPage3)
+        self.ScenarioSunny.clicked.connect(self.SunnyScenario)
         self.ScenarioSunny.setFixedSize(Resolution.Scenariox,Resolution.Scenarioy)
-        self.ScenarioSunny.setGeometry(0,50,Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioSunny.setGeometry(0,Resolution.y/24,Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioWindy.show()
         self.ScenarioWindy.setIcon(QtGui.QIcon("Windy.jpg"))
         self.ScenarioWindy.setIconSize(QtCore.QSize(Resolution.Scenariox,Resolution.Scenarioy))
-        self.ScenarioWindy.clicked.connect(self.TPage3)
+        self.ScenarioWindy.clicked.connect(self.WindyScenario)
         self.ScenarioWindy.setFixedSize(Resolution.Scenariox,Resolution.Scenarioy)
-        self.ScenarioWindy.setGeometry(0, Resolution.Scenarioy+51,Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioWindy.setGeometry(0, Resolution.Scenarioy+Resolution.y/24,Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioNight.show()
         self.ScenarioNight.setIcon(QtGui.QIcon("Night.jpg"))
         self.ScenarioNight.setIconSize(QtCore.QSize(Resolution.Scenariox,Resolution.Scenarioy))
-        self.ScenarioNight.clicked.connect(self.TPage3)
+        self.ScenarioNight.clicked.connect(self.NightScenario)
         self.ScenarioNight.setFixedSize(Resolution.Scenariox,Resolution.Scenarioy)
-        self.ScenarioNight.setGeometry(Resolution.Scenariox+1,50, Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioNight.setGeometry(Resolution.Scenariox+1,Resolution.y/24, Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioDay.show()
         self.ScenarioDay.setIcon(QtGui.QIcon("Day.jpg"))
         self.ScenarioDay.setIconSize(QtCore.QSize(Resolution.Scenariox, Resolution.Scenarioy))
-        self.ScenarioDay.clicked.connect(self.TPage3)
+        self.ScenarioDay.clicked.connect(self.DayScenario)
         self.ScenarioDay.setFixedSize(Resolution.Scenariox, Resolution.Scenarioy)
-        self.ScenarioDay.setGeometry(Resolution.Scenariox + 1,Resolution.Scenarioy+51, Resolution.Scenariox, Resolution.Scenarioy)
+        self.ScenarioDay.setGeometry(Resolution.Scenariox + 1,Resolution.Scenarioy+Resolution.y/24, Resolution.Scenariox, Resolution.Scenarioy)
         self.ScenarioEV.setIcon(QtGui.QIcon("EV.jpg"))
         self.ScenarioEV.setIconSize(QtCore.QSize(Resolution.Scenariox, Resolution.Scenarioy))
-        self.ScenarioEV.clicked.connect(self.TPage3)
+        self.ScenarioEV.clicked.connect(self.EVScenario)
         self.ScenarioEV.setFixedSize(Resolution.Scenariox, Resolution.Scenarioy)
-        self.ScenarioEV.setGeometry(2*Resolution.Scenariox + 1,50, Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioEV.setGeometry(2*Resolution.Scenariox + 1,Resolution.y/24, Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioEV.show()
         self.ScenarioHeatPumps.setIcon(QtGui.QIcon("HeatPumps.jpg"))
         self.ScenarioHeatPumps.setIconSize(QtCore.QSize(Resolution.Scenariox, Resolution.Scenarioy))
-        self.ScenarioHeatPumps.clicked.connect(self.TPage3)
+        self.ScenarioHeatPumps.clicked.connect(self.HeatPumpsScenario)
         self.ScenarioHeatPumps.setFixedSize(Resolution.Scenariox, Resolution.Scenarioy)
-        self.ScenarioHeatPumps.setGeometry(2 * Resolution.Scenariox + 1, Resolution.Scenarioy + 51, Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioHeatPumps.setGeometry(2 * Resolution.Scenariox + 1, Resolution.Scenarioy + Resolution.y/24, Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioHeatPumps.show()
         self.ScenarioSummer.setIcon(QtGui.QIcon("Summer.jpg"))
         self.ScenarioSummer.setIconSize(QtCore.QSize(Resolution.Scenariox, Resolution.Scenarioy))
-        self.ScenarioSummer.clicked.connect(self.TPage3)
+        self.ScenarioSummer.clicked.connect(self.SummerScenario)
         self.ScenarioSummer.setFixedSize(Resolution.Scenariox, Resolution.Scenarioy)
-        self.ScenarioSummer.setGeometry(3 * Resolution.Scenariox + 1, Resolution.Scenarioy + 51, Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioSummer.setGeometry(3 * Resolution.Scenariox + 1, Resolution.Scenarioy + Resolution.y/24, Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioSummer.show()
         self.ScenarioWinter.setIcon(QtGui.QIcon("Winter.jpg"))
         self.ScenarioWinter.setIconSize(QtCore.QSize(Resolution.Scenariox, Resolution.Scenarioy))
-        self.ScenarioWinter.clicked.connect(self.TPage3)
+        self.ScenarioWinter.clicked.connect(self.WinterScenario)
         self.ScenarioWinter.setFixedSize(Resolution.Scenariox, Resolution.Scenarioy)
-        self.ScenarioWinter.setGeometry(3 * Resolution.Scenariox + 1, 50, Resolution.Scenariox,Resolution.Scenarioy)
+        self.ScenarioWinter.setGeometry(3 * Resolution.Scenariox + 1, Resolution.y/24, Resolution.Scenariox,Resolution.Scenarioy)
         self.ScenarioWinter.show()
         self.BackFromScenario.setText("Back to Main page")
         self.BackFromScenario.clicked.connect(self.MainPage)
@@ -311,6 +322,7 @@ class SmartTableWindow(QMainWindow):
         self.VoltagePictureButton.hide()
 
     def ShowVoltage(self):
+        self.BackFromBuildingSelection.hide()
         self.HideAdminPage()
         self.HideBuildingPages()
         self.HideMainPage()
@@ -324,7 +336,7 @@ class SmartTableWindow(QMainWindow):
         self.PowerText.setText("Power in kW")
         self.PowerLabel.setReadOnly(True)
         self.PowerText.setGeometry(Resolution.x /24, Resolution.y/4, Resolution.x / 8,Resolution.y / 8)
-        self.BackFromBuildingSelection.setGeometry(Resolution.x-(Resolution.x/24+Resolution.x/7),0,Resolution.x/7,Resolution.y/24)
+        self.BackFromBuildingSelection.setGeometry(Resolution.x-(Resolution.x/7),Resolution.y/24,Resolution.x/7,Resolution.y/7)
         self.BackFromBuildingSelection.setText("Voltage Selection")
         self.BackFromBuildingSelection.clicked.connect(self.ShowVoltage)
         self.LowVoltageButton.setText("Low Voltage Buildings")
@@ -399,6 +411,10 @@ class SmartTableWindow(QMainWindow):
         self.AddBuildingMaximumPowerTextBox.setGeometry(Resolution.x/1.5,Resolution.y/3.8+Resolution.y/10,Resolution.x/12,Resolution.y/12)
         self.AddBuildingButton.setGeometry(Resolution.x/5.2,Resolution.y/2+Resolution.y/10,Resolution.x/6,Resolution.y/6)
         self.AdminRestartButton.setGeometry(Resolution.x/1.8,Resolution.y/2+Resolution.y/10,Resolution.x/6,Resolution.y/6)
+        self.ConfigButton.setGeometry(Resolution.x/1.4,Resolution.y/2+Resolution.y/10,Resolution.x/6,Resolution.y/6)
+        self.ConfigButton.show()
+        self.ConfigButton.clicked.connect(self.OptionsPage)
+        self.ConfigButton.setText("Options")
         self.AddBuildingButton.show()
         self.AddBuildingButton.clicked.connect(self.AddBuilding)
         self.AdminRestartButton.setText("Restart App")
@@ -429,6 +445,24 @@ class SmartTableWindow(QMainWindow):
         self.AdminLabel.show()
         self.AddBuildingRFIDLabel.show()
         self.Password.hide()
+    def OptionsPage(self):
+        self.HideAdminPage()
+        self.ConfigResolutionX.setGeometry(Resolution.x/5.2,Resolution.y/16+Resolution.y/10,Resolution.x/6,Resolution.y/12)
+        self.ConfigBroker.setGeometry(Resolution.x/1.8,Resolution.y/16+Resolution.y/10,Resolution.x/6,Resolution.y/12)
+        self.ConfigResolutionY.setGeometry(Resolution.x/5.2,Resolution.y/8+Resolution.y/10,Resolution.x/6,Resolution.y/12)
+        self.ConfigPort.setGeometry(Resolution.x/1.8,Resolution.y/8+Resolution.y/10,Resolution.x/6,Resolution.y/12)
+        self.SendConfig.setGeometry(Resolution.x/2.8,Resolution.y/2+Resolution.y/10,Resolution.x/6,Resolution.y/6)
+        self.ConfigResolutionX.setText(str(Resolution.x))
+        self.ConfigResolutionY.setText(str(Resolution.y))
+        self.ConfigPort.setText(str(MQTT.port))
+        self.ConfigBroker.setText(MQTT.broker)
+        self.SendConfig.clicked.connect(self.WriteConfigfile)
+        self.ConfigBroker.show()
+        self.ConfigPort.show()
+        self.SendConfig.show()
+        self.SendConfig.setText("Change")
+        self.ConfigResolutionX.show()
+        self.ConfigResolutionY.show()
 
     def MediumVoltagePage(self):
         self.HideVoltagePage()
@@ -539,7 +573,38 @@ class SmartTableWindow(QMainWindow):
         self.Listsinitialization()
     def PublishMQTT(self,TopicValue, PayloadValue):
         self.client1.publish(TopicValue, PayloadValue)
-
+    def SunnyScenario(self):
+        MQTT.Topic="sendToPc/Scenario/sunny"
+        MQTT.Payload='Sunny'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def WindyScenario(self):
+        MQTT.Topic="sendToPc/Scenario/windy"
+        MQTT.Payload='Windy'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def DayScenario(self):
+        MQTT.Topic="sendToPc/Scenario/day"
+        MQTT.Payload='Day'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def NightScenario(self):
+        MQTT.Topic="sendToPc/Scenario/night"
+        MQTT.Payload='Night'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def EVScenario(self):
+        MQTT.Topic="sendToPc/Scenario/ev"
+        MQTT.Payload='EV'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def HeatPumpsScenario(self):
+        MQTT.Topic="sendToPc/Scenario/heatpumps"
+        MQTT.Payload='HeatPumps'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def WinterScenario(self):
+        MQTT.Topic="sendToPc/Scenario/winter"
+        MQTT.Payload='Winter'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
+    def SummerScenario(self):
+        MQTT.Topic="sendToPc/Scenario/summer"
+        MQTT.Payload='Summer'
+        self.PublishMQTT(MQTT.Topic,MQTT.Payload)
     def Listsinitialization(self):
         self.LVlist.clear()
         self.MVlist.clear()
@@ -577,6 +642,35 @@ class SmartTableWindow(QMainWindow):
                 self.MV_dict.pop(x)
             if self.HV_dict[x] == None:
                 self.HV_dict.pop(x)
+    def Configfile(self):
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_path = os.path.join(dir_path, "config.txt")
+
+        with open("config.txt") as config_file:
+            self.read_data=[line.rstrip() for line in config_file]
+            Resolution.x=int(self.read_data[1])
+            Resolution.y=int(self.read_data[2])
+            Resolution.Scenariox = Resolution.x / 4
+            Resolution.Scenarioy = Resolution.y / 2
+            MQTT.broker=(self.read_data[4])
+            MQTT.port=int((self.read_data[5]))
+    def WriteConfigfile(self):
+        print("Data written")
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        file_path = os.path.join(dir_path, "config.txt")
+        write_data=[]
+        write_data.insert(0,"Resolution\n")
+        write_data.insert(1,self.ConfigResolutionX.text()+"\n")
+        write_data.insert(2,self.ConfigResolutionY.text()+"\n")
+        write_data.insert(3,"MQTT\n")
+        write_data.insert(4,self.ConfigBroker.text()+"\n")
+        write_data.insert(5,self.ConfigPort.text()+"\n")
+        #fw.write(line + '\n' for line in line_list)
+        with open(file_path,'w') as config_file:
+            config_file.writelines(write_data)
+
+
+
 def on_publish(client, userdata, result):  # create function for callback
     print("data published \n")
     pass

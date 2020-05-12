@@ -1,0 +1,6 @@
+Resolution
+1280
+720
+MQTT
+broker.hivemq.com
+1883
